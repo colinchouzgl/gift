@@ -5,8 +5,8 @@ package enums;
  * @since 2018/8/14
  */
 public enum Time {
-    DAY(1, "Day"),
-    NIGHT(2, "Night");
+    DAY(1, "白天"),
+    NIGHT(2, "晚上");
 
     Time(int value, String desc) {
         this.value = value;
