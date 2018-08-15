@@ -277,6 +277,7 @@ public class GameUI extends JFrame implements ActionListener {
 
         if (game.getApt() == 0) {
             game.timePass();
+            Actions.randomEvent(this);
             updateStatus();
         }
     }

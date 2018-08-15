@@ -1,7 +1,10 @@
 package game;
 
 import commons.Rules;
+import commons.Utils;
 import enums.ActionType;
+import enums.ChatResult;
+import enums.RandomEvent;
 import enums.Snack;
 import io.GameUI;
 
@@ -86,8 +89,28 @@ public class Actions {
     }
 
     public static void chat(GameUI ui) {
-        ui.game.addLove(Rules.computChatResult(ui.game.getMood()));
+        ChatResult result = Rules.computeChatResult(ui.game.getMood());
+
+        Toolkit.getDefaultToolkit().beep();
+        JOptionPane.showMessageDialog(null, result.getDesc(), "聊了一会", JOptionPane.INFORMATION_MESSAGE);
+
+        ui.game.addLove(result.getEffect());
         ui.game.subApt(ActionType.CHAT.getApt());
         ui.updateStatus();
+    }
+
+    public static void watchTV(GameUI ui) {
+
+    }
+
+    public static void randomEvent(GameUI ui) {
+        if (!Utils.isWeekend(ui.game) && Utils.isNight(ui.game)) {
+            RandomEvent event = Rules.computeEveningEvent(ui.game.getLove());
+            if(!event.equals(RandomEvent.NONE)){
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(null, event.getDesc(), "偶然事件", JOptionPane.INFORMATION_MESSAGE);
+                ui.game.addLove(event.getEffect());
+            }
+        }
     }
 }

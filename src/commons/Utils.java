@@ -42,9 +42,8 @@ public class Utils {
         return date + " " + Time.get(game.getTime()).getDesc();
     }
 
-    public int random(int min, int max) {
-        Random random = new Random();
+    public static int random(int min, int max) {
         //TODO
-        return 0;
+        return 1;
     }
 }

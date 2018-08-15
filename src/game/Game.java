@@ -1,15 +1,9 @@
 package game;
 
 import commons.Rules;
-import commons.Utils;
-import enums.ActionType;
 import enums.Time;
 import enums.Tip;
-import io.GameUI;
 import io.IOUtils;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Zhou Guanliang
@@ -112,23 +106,28 @@ public class Game {
 
     public void addMoney(int offset) {
         money += offset;
+        money = money < 0 ? 0 : money;
     }
 
     public void addMood(int offset) {
         mood += offset;
+        mood = mood < 0 ? 0 : mood;
     }
 
     public void addLove(int offset) {
         love += offset;
+        love = love < 0 ? 0 : love;
     }
 
     public void addExperience(int offset, IOUtils ioUtils) {
         experience += offset;
+        experience = experience < 0 ? 0 : experience;
         updateSalary(ioUtils);
     }
 
     public void subApt(int offset) {
         apt -= offset;
+        apt = apt < 0 ? 0 : apt;
     }
 
     private void updateSalary(IOUtils ioUtils) {
