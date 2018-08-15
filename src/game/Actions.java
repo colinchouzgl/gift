@@ -1,12 +1,12 @@
 package game;
 
+import commons.Rules;
 import enums.ActionType;
 import enums.Snack;
 import io.GameUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,34 +24,27 @@ public class Actions {
         ui.game.addExperience(EXPERIENCE_INCR_WHILE_WORK, null);
         ui.game.addMood(-MOOD_DROP_WHILE_WORK);
         ui.game.subApt(ActionType.WORK.getApt());
+        ui.updateStatus();
     }
 
     public static void workOvertime(GameUI ui) {
         ui.game.addMoney((int) (ui.game.getSalary() * 1.5));
         ui.game.addExperience((int) (EXPERIENCE_INCR_WHILE_WORK * 1.5), null);
-        ui.game.addMood((int) (MOOD_DROP_WHILE_WORK * 1.5));
+        ui.game.addMood(-(int) (MOOD_DROP_WHILE_WORK * 1.5));
         ui.game.subApt(ActionType.WORK_OVERTIME.getApt());
+        ui.updateStatus();
     }
 
     public static void rest(GameUI ui) {
         ui.game.addMood(MOOD_INCR_WHILE_REST);
         ui.game.subApt(ActionType.REST.getApt());
+        ui.updateStatus();
     }
 
-    public static void eatSnack(GameUI ui) {
+    public static void showSnack(GameUI ui) {
         ui.itemTitle.setText("可购买的零食：");
         ui.itemTitle.setVisible(true);
         List<Snack> snacks = Arrays.asList(Snack.values());
-
-        List<Snack> affordableSnacks = new ArrayList<>();
-        List<Snack> unaffordableSnacks = new ArrayList<>();
-        snacks.forEach(snack -> {
-            if (snack.getPrice() > ui.game.getMoney()) {
-                unaffordableSnacks.add(snack);
-            } else {
-                affordableSnacks.add(snack);
-            }
-        });
 
         int column = 1, currentX = 90, currentY = 70;
         for (Snack snack : snacks) {
@@ -72,6 +65,7 @@ public class Actions {
             button.setText(snack.getDesc());
             button.setToolTipText("价格：" + snack.getPrice() + "，效果：" + snack.getEffect());
             button.setFont(new Font("黑体", Font.PLAIN, 18));
+            button.setName("snack" + snack.getValue());
             button.addActionListener(ui);
 
             if (snack.getPrice() > ui.game.getMoney()) {
@@ -81,19 +75,19 @@ public class Actions {
             ui.snackGroup.add(button);
             ui.itemPane.repaint();
         }
-//
-//        ioUtils.snackOptions(affordableSnacks, unaffordableSnacks);
-//
-//        if (affordableSnacks.size() == 0) {
-//            ioUtils.tip(Tip.NO_SNACK_AFFORDABLE);
-//            return;
-//        }
-//
-//        int choice = ioUtils.choose(affordableSnacks);
-//        Snack snack = snacks.get(choice - 1);
-//
-//        ui.game.addMoney(-snack.getPrice());
-//        ui.game.addMood(snack.getEffect());
-//        ui.game.subApt(ActionType.EAT_SNACK.getApt());
+    }
+
+    public static void eatSnack(GameUI ui, JButton button) {
+        Snack snack = Snack.get(Integer.parseInt(button.getName().replaceAll("snack", "")));
+        ui.game.addMoney(-snack.getPrice());
+        ui.game.addMood(snack.getEffect());
+        ui.game.subApt(ActionType.EAT_SNACK.getApt());
+        ui.updateStatus();
+    }
+
+    public static void chat(GameUI ui) {
+        ui.game.addLove(Rules.computChatResult(ui.game.getMood()));
+        ui.game.subApt(ActionType.CHAT.getApt());
+        ui.updateStatus();
     }
 }

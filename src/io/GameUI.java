@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
 /**
  * @author Zhou Guanliang
@@ -260,13 +261,24 @@ public class GameUI extends JFrame implements ActionListener {
         } else if (e.getSource() == rest) {
             Actions.rest(this);
         } else if (e.getSource() == eatSnack) {
-            Actions.eatSnack(this);
+            Actions.showSnack(this);
+        } else if (e.getSource() == chat) {
+            Actions.chat(this);
+        } else if (e.getSource() instanceof JButton) {
+            JButton source = (JButton) e.getSource();
+            Enumeration<AbstractButton> snackButtons = snackGroup.getElements();
+            while (snackButtons.hasMoreElements()) {
+                AbstractButton button = snackButtons.nextElement();
+                if (button.equals(source)) {
+                    Actions.eatSnack(this, source);
+                }
+            }
         }
 
         if (game.getApt() == 0) {
             game.timePass();
+            updateStatus();
         }
-        updateStatus();
     }
 
     public void updateStatus() {
@@ -277,6 +289,15 @@ public class GameUI extends JFrame implements ActionListener {
         experienceValue.setText(String.valueOf(game.getExperience()));
         salaryValue.setText(String.valueOf(game.getSalary()));
         aptValue.setText(String.valueOf(game.getApt()));
+
+        Enumeration<AbstractButton> snackButtons = snackGroup.getElements();
+        while (snackButtons.hasMoreElements()) {
+            AbstractButton button = snackButtons.nextElement();
+            itemPane.remove(button);
+        }
+        snackGroup = new ButtonGroup();
+        itemTitle.setVisible(false);
+        itemPane.repaint();
 
         if (Utils.isWeekend(game)) {
             work.setEnabled(false);

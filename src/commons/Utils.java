@@ -3,6 +3,8 @@ package commons;
 import enums.Time;
 import game.Game;
 
+import java.util.Random;
+
 /**
  * @author Zhou Guanliang
  * @since 2018/8/14
@@ -38,5 +40,11 @@ public class Utils {
                 date = "周五";
         }
         return date + " " + Time.get(game.getTime()).getDesc();
+    }
+
+    public int random(int min, int max) {
+        Random random = new Random();
+        //TODO
+        return 0;
     }
 }

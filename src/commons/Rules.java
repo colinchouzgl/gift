@@ -32,4 +32,9 @@ public class Rules {
         }
         return 1500;
     }
+
+    public static int computChatResult(int mood){
+        //TODO
+        return 1;
+    }
 }
