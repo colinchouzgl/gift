@@ -5,7 +5,8 @@ import commons.Utils;
 import enums.ActionType;
 import enums.Time;
 import enums.Tip;
-import io.ConsoleUtils;
+import io.GameUI;
+import io.IOUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,8 +25,6 @@ public class Game {
     private int time;
     private int apt; //action point
 
-    public ConsoleUtils consoleUtils = new ConsoleUtils();
-
     public Game() {
         init();
     }
@@ -41,43 +40,43 @@ public class Game {
         apt = 1;
     }
 
-    public void run() {
-        while (true) {
-            doAction();
-            timePass();
-        }
-    }
+//    public void run(IOUtils ioUtils) {
+//        while (true) {
+//            doAction(ioUtils);
+//            timePass();
+//        }
+//    }
 
-    public void doAction() {
-        while (apt > 0) {
-            consoleUtils.status(this);
-
-            List<ActionType> options;
-            if (!Utils.isWeekend(this) && !Utils.isNight(this)) {
-                options = Arrays.asList(ActionType.WORK, ActionType.WORK_OVERTIME, ActionType.REST);
-            } else {
-                options = Arrays.asList(ActionType.EAT_SNACK, ActionType.CHAT, ActionType.WATCH_TV);
-            }
-
-            consoleUtils.actionOptions(options);
-            int choice = consoleUtils.choose(options);
-            switch (options.get(choice - 1)) {
-                case WORK:
-                    Actions.work(this);
-                    break;
-                case WORK_OVERTIME:
-                    Actions.workOvertime(this);
-                    break;
-                case REST:
-                    Actions.rest(this);
-                    break;
-                case EAT_SNACK:
-                    Actions.eatSnack(this);
-                    break;
-                default:
-            }
-        }
-    }
+//    public void doAction(IOUtils ioUtils) {
+//        while (apt > 0) {
+//            ioUtils.status(this);
+//
+//            List<ActionType> options;
+//            if (!Utils.isWeekend(this) && !Utils.isNight(this)) {
+//                options = Arrays.asList(ActionType.WORK, ActionType.WORK_OVERTIME, ActionType.REST);
+//            } else {
+//                options = Arrays.asList(ActionType.EAT_SNACK, ActionType.CHAT, ActionType.WATCH_TV);
+//            }
+//
+//            ioUtils.actionOptions(options);
+//            int choice = ioUtils.choose(options);
+//            switch (options.get(choice - 1)) {
+//                case WORK:
+//                    Actions.work(this);
+//                    break;
+//                case WORK_OVERTIME:
+//                    Actions.workOvertime(this);
+//                    break;
+//                case REST:
+//                    Actions.rest(this);
+//                    break;
+//                case EAT_SNACK:
+//                    Actions.eatSnack(this, null);
+//                    break;
+//                default:
+//            }
+//        }
+//    }
 
     public void timePass() {
         if (date >= 1 && date <= 4) {
@@ -123,19 +122,19 @@ public class Game {
         love += offset;
     }
 
-    public void addExperience(int offset) {
+    public void addExperience(int offset, IOUtils ioUtils) {
         experience += offset;
-        updateSalary();
+        updateSalary(ioUtils);
     }
 
     public void subApt(int offset) {
         apt -= offset;
     }
 
-    private void updateSalary() {
+    private void updateSalary(IOUtils ioUtils) {
         int newSalary = Rules.getSalaryByExperience(experience);
         if (newSalary > salary) {
-            consoleUtils.tip(Tip.RAISE_SALARY, newSalary);
+            ioUtils.tip(Tip.RAISE_SALARY, newSalary);
             salary = newSalary;
         }
     }
@@ -171,9 +170,5 @@ public class Game {
 
     public int getApt() {
         return apt;
-    }
-
-    public ConsoleUtils getConsoleUtils() {
-        return consoleUtils;
     }
 }

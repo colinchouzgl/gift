@@ -1,6 +1,7 @@
 package io;
 
 import commons.Utils;
+import game.Actions;
 import game.Game;
 
 import javax.swing.*;
@@ -13,44 +14,49 @@ import java.awt.event.ActionListener;
  * @since 2018/8/14
  */
 public class GameUI extends JFrame implements ActionListener {
-    private Container container;
-    private JPanel mainPane;
-    private JPanel itemPane;
+    public Game game;
 
-    private JLabel time;
-    private JLabel love;
-    private JLabel loveValue;
-    private JLabel money;
-    private JLabel moneyValue;
-    private JLabel mood;
-    private JLabel moodValue;
-    private JLabel experience;
-    private JLabel experienceValue;
-    private JLabel salary;
-    private JLabel salaryValue;
-    private JLabel apt;
-    private JLabel aptValue;
+    public Container container;
+    public JPanel mainPane;
+    public JPanel itemPane;
 
-    public static void main(String[] args) {
-//        try {
-//            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        GameUI ui = new GameUI();
-        ui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        ui.setVisible(true);
-        ui.setResizable(false);
-        ui.setLocationRelativeTo(null);
-    }
+    public JLabel time;
+    public JLabel love;
+    public JLabel loveValue;
+    public JLabel money;
+    public JLabel moneyValue;
+    public JLabel mood;
+    public JLabel moodValue;
+    public JLabel experience;
+    public JLabel experienceValue;
+    public JLabel salary;
+    public JLabel salaryValue;
+    public JLabel apt;
+    public JLabel aptValue;
+    public JLabel itemTitle;
 
-    GameUI() {
+    public JButton work;
+    public JButton workOvertime;
+    public JButton rest;
+    public JButton eatSnack;
+    public JButton chat;
+    public JButton watchTV;
+    public JButton shopping;
+    public JButton travel;
+    public JButton watchMovie;
+    public JButton extraWork;
+
+    public ButtonGroup snackGroup = new ButtonGroup();
+
+
+    public GameUI() {
         super();
-        Game game = new Game();
-        init(game);
+        init();
     }
 
-    private void init(Game game) {
+    private void init() {
+        game = new Game();
+
         this.setSize(800, 600);
         this.setTitle("TEST");
 
@@ -59,20 +65,23 @@ public class GameUI extends JFrame implements ActionListener {
 
         mainPane = new JPanel();
         mainPane.setLayout(null);
-        mainPane.setBounds(1, 0, 799, 300);
+        mainPane.setBounds(1, 0, 799, 320);
         mainPane.setBorder(BorderFactory.createEtchedBorder());
 
         itemPane = new JPanel();
         itemPane.setLayout(null);
-        itemPane.setPreferredSize(new Dimension(799, 1200));
+        itemPane.setBounds(1, 320, 799, 300);
 
         container.add(mainPane);
         container.add(itemPane);
 
-        addLabel(game);
+        addLabel();
+        addButton();
+
+        updateStatus();
     }
 
-    private void addLabel(Game game) {
+    private void addLabel() {
         //主面板
         time = new JLabel();
         time.setBounds(30, 10, 280, 40);
@@ -136,15 +145,174 @@ public class GameUI extends JFrame implements ActionListener {
 
         salaryValue = new JLabel();
         salaryValue.setBounds(680, 60, 280, 40);
-        salaryValue.setText(String.valueOf(game.getSalary())+"/天");
+        salaryValue.setText(String.valueOf(game.getSalary()) + "/天");
         salaryValue.setFont(new Font("黑体", Font.PLAIN, 22));
         mainPane.add(salaryValue);
+
+        apt = new JLabel();
+        apt.setBounds(620, 10, 280, 40);
+        apt.setText("剩余行动点数:");
+        apt.setFont(new Font("黑体", Font.PLAIN, 20));
+        mainPane.add(apt);
+
+        aptValue = new JLabel();
+        aptValue.setBounds(760, 10, 280, 40);
+        aptValue.setText(String.valueOf(game.getApt()));
+        aptValue.setFont(new Font("黑体", Font.PLAIN, 20));
+        mainPane.add(aptValue);
+
+        //副面板
+        itemTitle = new JLabel();
+        itemTitle.setBounds(60, 20, 280, 40);
+        itemTitle.setFont(new Font("黑体", Font.PLAIN, 20));
+        itemTitle.setVisible(false);
+        itemPane.add(itemTitle);
+    }
+
+    private void addButton() {
+        work = new JButton();
+        work.setBounds(100, 120, 120, 40);
+        work.setText("正常上班");
+        work.setToolTipText("去上班，现金+，工作表现+，心情-");
+        work.setFont(new Font("黑体", Font.PLAIN, 18));
+        work.addActionListener(this);
+        mainPane.add(work);
+
+        workOvertime = new JButton();
+        workOvertime.setBounds(100, 180, 120, 40);
+        workOvertime.setText("加班");
+        workOvertime.setToolTipText("加班到深夜，现金++，工作表现++，心情--");
+        workOvertime.setFont(new Font("黑体", Font.PLAIN, 18));
+        workOvertime.addActionListener(this);
+        mainPane.add(workOvertime);
+
+        rest = new JButton();
+        rest.setBounds(100, 240, 120, 40);
+        rest.setText("休息");
+        rest.setToolTipText("在家休息，心情++");
+        rest.setFont(new Font("黑体", Font.PLAIN, 18));
+        rest.addActionListener(this);
+        mainPane.add(rest);
+
+        eatSnack = new JButton();
+        eatSnack.setBounds(340, 120, 120, 40);
+        eatSnack.setText("吃零食");
+        eatSnack.setToolTipText("买零食吃，现金-，心情+");
+        eatSnack.setFont(new Font("黑体", Font.PLAIN, 18));
+        eatSnack.addActionListener(this);
+        mainPane.add(eatSnack);
+
+        chat = new JButton();
+        chat.setBounds(340, 180, 120, 40);
+        chat.setText("聊天");
+        chat.setToolTipText("聊天");
+        chat.setFont(new Font("黑体", Font.PLAIN, 18));
+        chat.addActionListener(this);
+        mainPane.add(chat);
+
+        watchTV = new JButton();
+        watchTV.setBounds(340, 240, 120, 40);
+        watchTV.setText("看电视");
+        watchTV.setToolTipText("看电视");
+        watchTV.setFont(new Font("黑体", Font.PLAIN, 18));
+        watchTV.addActionListener(this);
+        mainPane.add(watchTV);
+
+        shopping = new JButton();
+        shopping.setBounds(580, 120, 120, 40);
+        shopping.setText("逛商场");
+        shopping.setToolTipText("买买买，现金-，心情+");
+        shopping.setFont(new Font("黑体", Font.PLAIN, 18));
+        shopping.addActionListener(this);
+        mainPane.add(shopping);
+
+        travel = new JButton();
+        travel.setBounds(580, 160, 120, 40);
+        travel.setText("旅游");
+        travel.setToolTipText("出去玩，现金-，心情+，甜蜜度+");
+        travel.setFont(new Font("黑体", Font.PLAIN, 18));
+        travel.addActionListener(this);
+        mainPane.add(travel);
+
+        watchMovie = new JButton();
+        watchMovie.setBounds(580, 200, 120, 40);
+        watchMovie.setText("看电影");
+        watchMovie.setToolTipText("看电影，现金-，心情+，甜蜜度+");
+        watchMovie.setFont(new Font("黑体", Font.PLAIN, 18));
+        watchMovie.addActionListener(this);
+        mainPane.add(watchMovie);
+
+        extraWork = new JButton();
+        extraWork.setBounds(580, 240, 120, 40);
+        extraWork.setText("在家加班");
+        extraWork.setToolTipText("周末在家加班，现金++，工作表现++，心情--");
+        extraWork.setFont(new Font("黑体", Font.PLAIN, 18));
+        extraWork.addActionListener(this);
+        mainPane.add(extraWork);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == buttonNewItem) {
-//
-//        }
+        if (e.getSource() == work) {
+            Actions.work(this);
+        } else if (e.getSource() == workOvertime) {
+            Actions.workOvertime(this);
+        } else if (e.getSource() == rest) {
+            Actions.rest(this);
+        } else if (e.getSource() == eatSnack) {
+            Actions.eatSnack(this);
+        }
+
+        if (game.getApt() == 0) {
+            game.timePass();
+        }
+        updateStatus();
+    }
+
+    public void updateStatus() {
+        time.setText(Utils.formatDateTime(game));
+        loveValue.setText(String.valueOf(game.getLove()));
+        moneyValue.setText(String.valueOf(game.getMoney()));
+        moodValue.setText(String.valueOf(game.getMood()));
+        experienceValue.setText(String.valueOf(game.getExperience()));
+        salaryValue.setText(String.valueOf(game.getSalary()));
+        aptValue.setText(String.valueOf(game.getApt()));
+
+        if (Utils.isWeekend(game)) {
+            work.setEnabled(false);
+            workOvertime.setEnabled(false);
+            rest.setEnabled(false);
+            eatSnack.setEnabled(false);
+            chat.setEnabled(false);
+            watchTV.setEnabled(false);
+            shopping.setEnabled(true);
+            travel.setEnabled(true);
+            watchMovie.setEnabled(true);
+            extraWork.setEnabled(true);
+        } else {
+            if (Utils.isNight(game)) {
+                work.setEnabled(false);
+                workOvertime.setEnabled(false);
+                rest.setEnabled(false);
+                eatSnack.setEnabled(true);
+                chat.setEnabled(true);
+                watchTV.setEnabled(true);
+                shopping.setEnabled(false);
+                travel.setEnabled(false);
+                watchMovie.setEnabled(false);
+                extraWork.setEnabled(false);
+            } else {
+                work.setEnabled(true);
+                workOvertime.setEnabled(true);
+                rest.setEnabled(true);
+                eatSnack.setEnabled(false);
+                chat.setEnabled(false);
+                watchTV.setEnabled(false);
+                shopping.setEnabled(false);
+                travel.setEnabled(false);
+                watchMovie.setEnabled(false);
+                extraWork.setEnabled(false);
+            }
+        }
     }
 }
