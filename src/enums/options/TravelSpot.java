@@ -5,9 +5,9 @@ package enums.options;
  * @since 2018/8/16
  */
 public enum TravelSpot {
-    QHDAO(1, "Qin Huang Dao", 800, 20, 10),
-    BDHE(2, "Bei Dai He", 500, 15, 8),
-    TIANJIN(3, "Tianjin", 400, 10, 5);
+    QIN_HUANG_DAO(1, "秦皇岛", 800, 150, 15),
+    BEI_DAI_HE(2, "北戴河", 600, 120, 12),
+    TIANJIN(3, "天津", 600, 100, 15);
 
     TravelSpot(int value, String desc, int price, int moodEffect, int loveEffect) {
         this.value = value;

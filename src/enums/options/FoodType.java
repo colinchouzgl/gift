@@ -5,12 +5,12 @@ package enums.options;
  * @since 2018/8/16
  */
 public enum FoodType {
-    CANDY(1, "Candy", 5, 2),
-    CHOCOLATE(2, "Chocolate", 10, 3),
-    YOGURT(3, "Yogurt", 99999, 2),
-    BREAD(4, "Bread", 5, 2),
-    EGG(5, "Egg", 5, 2),
-    MILK(6, "Milk", 5, 2);
+    NOODLES(1, "泡面", 5, 1),
+    BREAD(2, "面包", 5, 1),
+    PIE(3, "好丽友", 8, 2),
+    ICE(4, "冰糕", 8, 2),
+    CAKE(5, "蛋糕", 12, 3),
+    MILK(6, "牛奶", 8, 2);
 
     FoodType(int value, String desc, int price, int effect) {
         this.value = value;
@@ -41,7 +41,7 @@ public enum FoodType {
     }
 
     public static FoodType get(int value) {
-        for (FoodType type: FoodType.values()) {
+        for (FoodType type : FoodType.values()) {
             if (value == type.getValue()) {
                 return type;
             }

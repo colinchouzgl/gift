@@ -49,11 +49,13 @@ public class Actions {
     }
 
     public static void showSnack(GameUI ui) {
+        ui.updateStatus();
+
         ui.itemTitle.setText("可购买的零食：");
         ui.itemTitle.setVisible(true);
         List<Snack> snacks = Arrays.asList(Snack.values());
 
-        int column = 1, currentX = 90, currentY = 70;
+        int column = 1, currentX = 120, currentY = 70;
         for (Snack snack : snacks) {
             JButton button = new JButton();
             int x = currentX;
@@ -62,10 +64,10 @@ public class Actions {
             column++;
             if (column > 4) {
                 column = 1;
-                currentX = 90;
+                currentX = 120;
                 currentY += 50;
             } else {
-                currentX += 160;
+                currentX += 200;
             }
 
             button.setBounds(x, y, 150, 40);
@@ -78,6 +80,13 @@ public class Actions {
             if (snack.getPrice() > ui.game.getMoney()) {
                 button.setEnabled(false);
             }
+
+            if (snack == Snack.STORED) {
+                if (ui.game.getFoodList().size() == 0) {
+                    button.setEnabled(false);
+                }
+            }
+
             ui.itemPane.add(button);
             ui.snackGroup.add(button);
             ui.itemPane.repaint();
@@ -93,11 +102,14 @@ public class Actions {
     }
 
     public static void showStored(GameUI ui) {
-        ui.itemTitle.setText("存储的食品：");
+        ui.updateStatus();
+
+        ui.itemTitle.setText("储藏的食品：");
         ui.itemTitle.setVisible(true);
         List<Food> foodList = ui.game.getFoodList();
 
-        int column = 1, currentX = 90, currentY = 70;
+        int index = 1;
+        int column = 1, currentX = 120, currentY = 70;
         for (Food food : foodList) {
             JButton button = new JButton();
             int x = currentX;
@@ -106,22 +118,24 @@ public class Actions {
             column++;
             if (column > 4) {
                 column = 1;
-                currentX = 90;
+                currentX = 120;
                 currentY += 50;
             } else {
-                currentX += 160;
+                currentX += 200;
             }
 
             button.setBounds(x, y, 150, 40);
             button.setText(food.getType().getDesc() + "【" + food.getCount() + "份】");
             button.setToolTipText("价格：" + food.getType().getPrice() + "，效果：" + food.getType().getEffect());
             button.setFont(new Font("黑体", Font.PLAIN, 18));
-            button.setName("stored" + food.getType().getValue());
+            button.setName("stored" + index);
             button.addActionListener(ui);
 
             ui.itemPane.add(button);
             ui.storedGroup.add(button);
             ui.itemPane.repaint();
+
+            index++;
         }
     }
 
@@ -133,7 +147,7 @@ public class Actions {
         if (food.getCount() > 1) {
             food.setCount(food.getCount() - 1);
         } else {
-            foodList.remove(index);
+            foodList.remove(index - 1);
         }
 
         ui.game.addMood(food.getType().getEffect());
@@ -164,11 +178,13 @@ public class Actions {
     }
 
     public static void showGoods(GameUI ui) {
+        ui.updateStatus();
+
         ui.itemTitle.setText("可购买的商品：");
         ui.itemTitle.setVisible(true);
         List<Goods> goodsList = Arrays.asList(Goods.values());
 
-        int column = 1, currentX = 90, currentY = 70;
+        int column = 1, currentX = 120, currentY = 70;
         for (Goods goods : goodsList) {
             JButton button = new JButton();
             int x = currentX;
@@ -177,10 +193,10 @@ public class Actions {
             column++;
             if (column > 4) {
                 column = 1;
-                currentX = 90;
+                currentX = 120;
                 currentY += 50;
             } else {
-                currentX += 160;
+                currentX += 200;
             }
 
             button.setBounds(x, y, 150, 40);
@@ -208,11 +224,13 @@ public class Actions {
     }
 
     public static void showClothes(GameUI ui) {
+        ui.updateStatus();
+
         ui.itemTitle.setText("可购买的服装：");
         ui.itemTitle.setVisible(true);
         List<Clothes> clothesList = Arrays.asList(Clothes.values());
 
-        int column = 1, currentX = 90, currentY = 70;
+        int column = 1, currentX = 120, currentY = 70;
         for (Clothes clothes : clothesList) {
             JButton button = new JButton();
             int x = currentX;
@@ -221,10 +239,10 @@ public class Actions {
             column++;
             if (column > 4) {
                 column = 1;
-                currentX = 90;
+                currentX = 120;
                 currentY += 50;
             } else {
-                currentX += 160;
+                currentX += 200;
             }
 
             button.setBounds(x, y, 150, 40);
@@ -252,11 +270,13 @@ public class Actions {
     }
 
     public static void showFood(GameUI ui) {
+        ui.updateStatus();
+
         ui.itemTitle.setText("可购买的食品：");
         ui.itemTitle.setVisible(true);
         List<FoodType> foodTypeList = Arrays.asList(FoodType.values());
 
-        int column = 1, currentX = 90, currentY = 70;
+        int column = 1, currentX = 120, currentY = 70;
         for (FoodType foodType : foodTypeList) {
             JButton button = new JButton();
             int x = currentX;
@@ -265,10 +285,10 @@ public class Actions {
             column++;
             if (column > 4) {
                 column = 1;
-                currentX = 90;
+                currentX = 120;
                 currentY += 50;
             } else {
-                currentX += 160;
+                currentX += 200;
             }
 
             button.setBounds(x, y, 150, 40);
@@ -325,11 +345,13 @@ public class Actions {
     }
 
     public static void showSpot(GameUI ui) {
+        ui.updateStatus();
+
         ui.itemTitle.setText("要去玩的地点：");
         ui.itemTitle.setVisible(true);
         List<Spot> spots = Arrays.asList(Spot.values());
 
-        int column = 1, currentX = 90, currentY = 70;
+        int column = 1, currentX = 120, currentY = 70;
         for (Spot spot : spots) {
             JButton button = new JButton();
             int x = currentX;
@@ -338,10 +360,10 @@ public class Actions {
             column++;
             if (column > 4) {
                 column = 1;
-                currentX = 90;
+                currentX = 120;
                 currentY += 50;
             } else {
-                currentX += 160;
+                currentX += 200;
             }
 
             button.setBounds(x, y, 150, 40);
@@ -370,11 +392,13 @@ public class Actions {
     }
 
     public static void showTravelSpot(GameUI ui) {
+        ui.updateStatus();
+
         ui.itemTitle.setText("外出旅游的地点：");
         ui.itemTitle.setVisible(true);
         List<TravelSpot> travelSpots = Arrays.asList(TravelSpot.values());
 
-        int column = 1, currentX = 90, currentY = 70;
+        int column = 1, currentX = 120, currentY = 70;
         for (TravelSpot travelSpot : travelSpots) {
             JButton button = new JButton();
             int x = currentX;
@@ -383,10 +407,10 @@ public class Actions {
             column++;
             if (column > 4) {
                 column = 1;
-                currentX = 90;
+                currentX = 120;
                 currentY += 50;
             } else {
-                currentX += 160;
+                currentX += 200;
             }
 
             button.setBounds(x, y, 150, 40);

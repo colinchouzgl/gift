@@ -5,15 +5,15 @@ package enums.options;
  * @since 2018/8/16
  */
 public enum Clothes {
-    SKIRT(1, "Skirt", 40, 3),
-    DRESS(2, "Dress", 60, 5),
-    T_SHIRT(3, "T-Shirt", 30, 2),
-    SHIRT(4, "Shirt", 30, 2),
-    SWEATER(5, "Sweater", 50, 4),
-    PAINTS(6, "Paints", 50, 4),
-    COAT(7, "Coat", 70, 6),
-    HAT(8, "Hat", 20, 1),
-    SHOES(9, "Shoes", 60, 5);
+    SKIRT(1, "短裙", 80, 18),
+    DRESS(2, "连衣裙", 120, 25),
+    T_SHIRT(3, "T恤", 60, 15),
+    SHIRT(4, "衬衫", 80, 18),
+    SWEATER(5, "毛衣", 100, 22),
+    PAINTS(6, "裤子", 100, 22),
+    COAT(7, "风衣", 180, 28),
+    HAT(8, "帽子", 50, 15),
+    SHOES(9, "鞋", 120, 25);
 
     Clothes(int value, String desc, int price, int effect) {
         this.value = value;

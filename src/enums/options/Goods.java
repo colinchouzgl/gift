@@ -5,11 +5,14 @@ package enums.options;
  * @since 2018/8/16
  */
 public enum Goods {
-    LIPSTICK(1, "Lipstick", 80, 5),
-    SKIN_CARE(2, "Skin Care", 100, 6),
-    BAG(3, "Bag", 150, 8),
-    CLOTHES(4, "Clothes", 0, 0),
-    FOODS(5, "Foods", 0, 0);
+    LIPSTICK(1, "口红", 100, 20),
+    FOUNDATION(2, "粉底液", 200, 40),
+    EYEBROW_PENCIL(3, "眉笔", 30, 6),
+    EYE_SHADOW(4, "眼影", 150, 30),
+    SKIN_CARE(5, "护肤品", 150, 30),
+    BAG(6, "包包", 350, 50),
+    CLOTHES(7, "【衣服】", 0, 0),
+    FOODS(8, "【食品】", 0, 0);
 
     Goods(int value, String desc, int price, int effect) {
         this.value = value;

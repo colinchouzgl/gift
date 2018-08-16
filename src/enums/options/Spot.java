@@ -5,12 +5,12 @@ package enums.options;
  * @since 2018/8/16
  */
 public enum Spot {
-    SUBURB(1, "Suburb", 40, 5, 3),
-    HAPPY_VALLEY(2, "Happy Valley", 60, 8, 4),
-    GALLERY(3, "Gallery", 30, 3, 2),
-    NLGX(4, "NanLuo GuXiang", 30, 3, 2),
-    HOUHAI(5, "HOU HAI", 35, 3, 3),
-    TRAVEL(6, "Travel", 0, 0, 0);
+    SUBURB(1, "郊区", 100, 20, 2),
+    HAPPY_VALLEY(2, "欢乐谷", 180, 32, 5),
+    GALLERY(3, "美术馆", 80, 18, 1),
+    NLGX(4, "南锣鼓巷", 120, 22, 3),
+    HOUHAI(5, "后海", 150, 25, 4),
+    TRAVEL(6, "【旅游】", 0, 0, 0);
 
     Spot(int value, String desc, int price, int moodEffect, int loveEffect) {
         this.value = value;

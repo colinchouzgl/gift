@@ -2,7 +2,6 @@ package game;
 
 import commons.Rules;
 import enums.Time;
-import enums.Tip;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,48 +34,10 @@ public class Game {
         love = 100;
         experience = 0;
         salary = Rules.getSalaryByExperience(experience);
-        date = 6;
+        date = 1;
         time = Time.DAY.getValue();
-        apt = 1;
+        apt = 2;
     }
-
-//    public void run(IOUtils ioUtils) {
-//        while (true) {
-//            doAction(ioUtils);
-//            timePass();
-//        }
-//    }
-
-//    public void doAction(IOUtils ioUtils) {
-//        while (apt > 0) {
-//            ioUtils.status(this);
-//
-//            List<ActionType> options;
-//            if (!Utils.isWeekend(this) && !Utils.isNight(this)) {
-//                options = Arrays.asList(ActionType.WORK, ActionType.WORK_OVERTIME, ActionType.REST);
-//            } else {
-//                options = Arrays.asList(ActionType.EAT_SNACK, ActionType.CHAT, ActionType.WATCH_TV);
-//            }
-//
-//            ioUtils.actionOptions(options);
-//            int choice = ioUtils.choose(options);
-//            switch (options.get(choice - 1)) {
-//                case WORK:
-//                    Actions.work(this);
-//                    break;
-//                case WORK_OVERTIME:
-//                    Actions.workOvertime(this);
-//                    break;
-//                case REST:
-//                    Actions.rest(this);
-//                    break;
-//                case EAT_SNACK:
-//                    Actions.eatSnack(this, null);
-//                    break;
-//                default:
-//            }
-//        }
-//    }
 
     public void timePass() {
         if (date >= 1 && date <= 4) {
@@ -141,7 +102,7 @@ public class Game {
         if (newSalary > salary) {
 
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, String.format(Tip.RAISE_SALARY.getDesc(), newSalary), "加薪啦", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, String.format("你的工资涨到 %d 了!", newSalary), "加薪啦", JOptionPane.INFORMATION_MESSAGE);
 
             salary = newSalary;
         }
