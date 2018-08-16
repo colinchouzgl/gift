@@ -6,6 +6,8 @@ import enums.Tip;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Zhou Guanliang
@@ -20,6 +22,8 @@ public class Game {
     private int date;
     private int time;
     private int apt; //action point
+
+    private List<Food> foodList = new ArrayList<>();
 
     public Game() {
         init();
@@ -174,5 +178,9 @@ public class Game {
 
     public int getApt() {
         return apt;
+    }
+
+    public List<Food> getFoodList() {
+        return foodList;
     }
 }

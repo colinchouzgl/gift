@@ -92,6 +92,55 @@ public class Actions {
         ui.updateStatus();
     }
 
+    public static void showStored(GameUI ui) {
+        ui.itemTitle.setText("存储的食品：");
+        ui.itemTitle.setVisible(true);
+        List<Food> foodList = ui.game.getFoodList();
+
+        int column = 1, currentX = 90, currentY = 70;
+        for (Food food : foodList) {
+            JButton button = new JButton();
+            int x = currentX;
+            int y = currentY;
+
+            column++;
+            if (column > 4) {
+                column = 1;
+                currentX = 90;
+                currentY += 50;
+            } else {
+                currentX += 160;
+            }
+
+            button.setBounds(x, y, 150, 40);
+            button.setText(food.getType().getDesc() + "【" + food.getCount() + "份】");
+            button.setToolTipText("价格：" + food.getType().getPrice() + "，效果：" + food.getType().getEffect());
+            button.setFont(new Font("黑体", Font.PLAIN, 18));
+            button.setName("stored" + food.getType().getValue());
+            button.addActionListener(ui);
+
+            ui.itemPane.add(button);
+            ui.storedGroup.add(button);
+            ui.itemPane.repaint();
+        }
+    }
+
+    public static void eatStored(GameUI ui, JButton button) {
+        List<Food> foodList = ui.game.getFoodList();
+        int index = Integer.parseInt(button.getName().replaceAll("stored", ""));
+        Food food = foodList.get(index - 1);
+
+        if (food.getCount() > 1) {
+            food.setCount(food.getCount() - 1);
+        } else {
+            foodList.remove(index);
+        }
+
+        ui.game.addMood(food.getType().getEffect());
+        ui.game.subApt(ActionType.EAT_SNACK.getApt());
+        ui.updateStatus();
+    }
+
     public static void chat(GameUI ui) {
         ChatResult result = Rules.computeChatResult(ui.game.getMood());
 
@@ -198,6 +247,79 @@ public class Actions {
         Clothes clothes = Clothes.get(Integer.parseInt(button.getName().replaceAll("clothes", "")));
         ui.game.addMoney(-clothes.getPrice());
         ui.game.addMood(clothes.getEffect());
+        ui.game.subApt(ActionType.SHOPPING.getApt());
+        ui.updateStatus();
+    }
+
+    public static void showFood(GameUI ui) {
+        ui.itemTitle.setText("可购买的食品：");
+        ui.itemTitle.setVisible(true);
+        List<FoodType> foodTypeList = Arrays.asList(FoodType.values());
+
+        int column = 1, currentX = 90, currentY = 70;
+        for (FoodType foodType : foodTypeList) {
+            JButton button = new JButton();
+            int x = currentX;
+            int y = currentY;
+
+            column++;
+            if (column > 4) {
+                column = 1;
+                currentX = 90;
+                currentY += 50;
+            } else {
+                currentX += 160;
+            }
+
+            button.setBounds(x, y, 150, 40);
+            button.setText(foodType.getDesc());
+            button.setToolTipText("价格：" + foodType.getPrice() + "，效果：" + foodType.getEffect());
+            button.setFont(new Font("黑体", Font.PLAIN, 18));
+            button.setName("food" + foodType.getValue());
+            button.addActionListener(ui);
+
+            ui.itemPane.add(button);
+            ui.foodGroup.add(button);
+            ui.itemPane.repaint();
+        }
+    }
+
+    public static void buyFood(GameUI ui) {
+        int count;
+        try {
+            count = Integer.parseInt(ui.foodCount.getText());
+        } catch (Exception e) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, "只能输入整数！", "错误", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int cost = ui.selectedFoodType.getPrice() * count;
+        if (ui.game.getMoney() < cost) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, "你的现金不够！", "警告", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (count < 1) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, "至少购买一份！！", "警告", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        ui.game.addMoney(-cost);
+        ui.game.addMood(ui.selectedFoodType.getEffect());
+        List<Food> foodList = ui.game.getFoodList();
+        boolean exist = false;
+        for (Food food : foodList) {
+            if (food.getType().equals(ui.selectedFoodType)) {
+                food.setCount(food.getCount() + count - 1);
+                exist = true;
+            }
+        }
+        if (!exist) {
+            foodList.add(new Food(ui.selectedFoodType, count - 1));
+        }
         ui.game.subApt(ActionType.SHOPPING.getApt());
         ui.updateStatus();
     }

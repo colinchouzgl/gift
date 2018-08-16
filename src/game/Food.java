@@ -10,6 +10,14 @@ public class Food {
     private FoodType type;
     private int count;
 
+    public Food() {
+    }
+
+    public Food(FoodType type, int count) {
+        this.type = type;
+        this.count = count;
+    }
+
     public FoodType getType() {
         return type;
     }

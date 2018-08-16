@@ -10,7 +10,8 @@ public enum Snack {
     YOGURT(3, "Yogurt", 99999, 2),
     BREAD(4, "Bread", 5, 2),
     EGG(5, "Egg", 5, 2),
-    MILK(6, "Milk", 5, 2);
+    MILK(6, "Milk", 5, 2),
+    STORED(7, "Stored", 0, 0);
 
     Snack(int value, String desc, int price, int effect) {
         this.value = value;
