@@ -43,7 +43,6 @@ public class Utils {
     }
 
     public static int random(int min, int max) {
-        //TODO
-        return 1;
+        return new Random().nextInt(max - min + 1) + min;
     }
 }

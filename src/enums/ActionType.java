@@ -15,7 +15,7 @@ public enum ActionType {
 
     SHOPPING(101, "Go Shopping", 1),
     HANG_AROUND(102, "Hang Around", 1),
-    TRAVEL(103, "TRAVEL", 1),
+    TRAVEL(103, "Travel", 2),
     WATCH_MOVIE(104, "Watch Movie", 1),
     EXTRA_WORK(105, "Extra Work", 1),
     STAY_HOME(106, "Stay Home", 1);

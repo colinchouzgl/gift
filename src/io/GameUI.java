@@ -2,6 +2,7 @@ package io;
 
 import commons.Utils;
 import game.Actions;
+import game.Food;
 import game.Game;
 
 import javax.swing.*;
@@ -20,6 +21,7 @@ public class GameUI extends JFrame implements ActionListener {
     public Container container;
     public JPanel mainPane;
     public JPanel itemPane;
+    public JPanel foodPane;
 
     public JLabel time;
     public JLabel love;
@@ -35,6 +37,7 @@ public class GameUI extends JFrame implements ActionListener {
     public JLabel apt;
     public JLabel aptValue;
     public JLabel itemTitle;
+    public JLabel foodInfo;
 
     public JButton work;
     public JButton workOvertime;
@@ -47,11 +50,17 @@ public class GameUI extends JFrame implements ActionListener {
     public JButton watchMovie;
     public JButton extraWork;
     public JButton stayHome;
+    public JButton foodSubmit;
 
     public ButtonGroup snackGroup = new ButtonGroup();
     public ButtonGroup goodsGroup = new ButtonGroup();
+    public ButtonGroup clothesGroup = new ButtonGroup();
     public ButtonGroup spotGroup = new ButtonGroup();
     public ButtonGroup travelSpotGroup = new ButtonGroup();
+
+    public JDialog foodForm;
+
+    public JTextField foodCount;
 
     public GameUI() {
         super();
@@ -81,6 +90,7 @@ public class GameUI extends JFrame implements ActionListener {
 
         addLabel();
         addButton();
+        addDialog();
 
         updateStatus();
     }
@@ -255,6 +265,37 @@ public class GameUI extends JFrame implements ActionListener {
         mainPane.add(extraWork);
     }
 
+    private void addDialog(Food food) {
+        foodForm = new JDialog(this, true);
+        foodForm.setTitle("购买食品");
+        foodForm.setSize(300, 200);
+
+        foodPane = new JPanel();
+        foodPane.setLayout(null);
+        foodPane.setBounds(1, 0, 299, 200);
+        foodForm.setContentPane(foodPane);
+
+        foodInfo = new JLabel();
+        foodInfo.setBounds(40, 30, 200, 30);
+        foodInfo.setText("请填写购买数量:（" + food.getType().getDesc() + " 单价" + food.getType().getPrice() + ")");
+        foodInfo.setFont(new Font("黑体", Font.PLAIN, 15));
+        foodPane.add(foodInfo);
+
+        foodCount = new JTextField();
+        foodCount.setBounds(60, 80, 140, 40);
+        foodPane.add(foodCount);
+
+        foodSubmit = new JButton("确定");
+        foodSubmit.setBounds(210, 80, 50, 40);
+        foodSubmit.setFont(new Font("黑体", Font.PLAIN, 13));
+        foodSubmit.addActionListener(this);
+        foodPane.add(foodSubmit);
+
+        foodForm.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        foodForm.setResizable(false);
+        foodForm.setLocationRelativeTo(null);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == work) {
@@ -277,6 +318,8 @@ public class GameUI extends JFrame implements ActionListener {
             Actions.watchMovie(this);
         } else if (e.getSource() == extraWork) {
             Actions.extraWork(this);
+        } else if (e.getSource() == stayHome) {
+            Actions.stayHome(this);
         } else if (e.getSource() instanceof JButton) {
             JButton source = (JButton) e.getSource();
 
@@ -292,7 +335,15 @@ public class GameUI extends JFrame implements ActionListener {
             while (goodsButtons.hasMoreElements()) {
                 AbstractButton button = goodsButtons.nextElement();
                 if (button.equals(source)) {
-                    Actions.shopping(this, source);
+                    if ("goods4".equals(button.getName())) {
+                        updateStatus();
+                        Actions.showClothes(this);
+                    } else if ("goods5".equals(button.getName())) {
+                        updateStatus();
+                        foodForm.setVisible(true);
+                    } else {
+                        Actions.shopping(this, source);
+                    }
                 }
             }
 
@@ -306,6 +357,14 @@ public class GameUI extends JFrame implements ActionListener {
                     } else {
                         Actions.hangAround(this, source);
                     }
+                }
+            }
+
+            Enumeration<AbstractButton> clothesButtons = clothesGroup.getElements();
+            while (clothesButtons.hasMoreElements()) {
+                AbstractButton button = clothesButtons.nextElement();
+                if (button.equals(source)) {
+                    Actions.buyClothes(this, source);
                 }
             }
 
@@ -336,6 +395,7 @@ public class GameUI extends JFrame implements ActionListener {
 
         removeGroup(snackGroup);
         removeGroup(goodsGroup);
+        removeGroup(clothesGroup);
         removeGroup(spotGroup);
         removeGroup(travelSpotGroup);
 
@@ -378,6 +438,8 @@ public class GameUI extends JFrame implements ActionListener {
                 extraWork.setEnabled(false);
             }
         }
+
+        foodForm.setVisible(false);
     }
 
     private void removeGroup(ButtonGroup group) {

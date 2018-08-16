@@ -6,10 +6,7 @@ import enums.ActionType;
 import enums.ChatResult;
 import enums.RandomEvent;
 import enums.TVResult;
-import enums.options.Goods;
-import enums.options.Snack;
-import enums.options.Spot;
-import enums.options.TravelSpot;
+import enums.options.*;
 import io.GameUI;
 
 import javax.swing.*;
@@ -27,6 +24,7 @@ public class Actions {
     public static final int MOOD_INCR_WHILE_REST = 5;
     public static final int MOVIE_PRICE = 20;
     public static final int MOOD_INCR_WHILE_WATCHING_MOVIE = 5;
+    public static final int LOVE_INCR_WHILE_WATCHING_MOVIE = 2;
 
     public static void work(GameUI ui) {
         ui.game.addMoney(ui.game.getSalary());
@@ -160,6 +158,50 @@ public class Actions {
         ui.updateStatus();
     }
 
+    public static void showClothes(GameUI ui) {
+        ui.itemTitle.setText("可购买的服装：");
+        ui.itemTitle.setVisible(true);
+        List<Clothes> clothesList = Arrays.asList(Clothes.values());
+
+        int column = 1, currentX = 90, currentY = 70;
+        for (Clothes clothes : clothesList) {
+            JButton button = new JButton();
+            int x = currentX;
+            int y = currentY;
+
+            column++;
+            if (column > 4) {
+                column = 1;
+                currentX = 90;
+                currentY += 50;
+            } else {
+                currentX += 160;
+            }
+
+            button.setBounds(x, y, 150, 40);
+            button.setText(clothes.getDesc());
+            button.setToolTipText("价格：" + clothes.getPrice() + "，效果：" + clothes.getEffect());
+            button.setFont(new Font("黑体", Font.PLAIN, 18));
+            button.setName("clothes" + clothes.getValue());
+            button.addActionListener(ui);
+
+            if (clothes.getPrice() > ui.game.getMoney()) {
+                button.setEnabled(false);
+            }
+            ui.itemPane.add(button);
+            ui.clothesGroup.add(button);
+            ui.itemPane.repaint();
+        }
+    }
+
+    public static void buyClothes(GameUI ui, JButton button) {
+        Clothes clothes = Clothes.get(Integer.parseInt(button.getName().replaceAll("clothes", "")));
+        ui.game.addMoney(-clothes.getPrice());
+        ui.game.addMood(clothes.getEffect());
+        ui.game.subApt(ActionType.SHOPPING.getApt());
+        ui.updateStatus();
+    }
+
     public static void showSpot(GameUI ui) {
         ui.itemTitle.setText("要去玩的地点：");
         ui.itemTitle.setVisible(true);
@@ -182,7 +224,7 @@ public class Actions {
 
             button.setBounds(x, y, 150, 40);
             button.setText(spot.getDesc());
-            button.setToolTipText("价格：" + spot.getPrice() + "，效果：" + spot.getEffect());
+            button.setToolTipText("价格：" + spot.getPrice() + "，心情效果：" + spot.getMoodEffect() + "，甜蜜度效果：" + spot.getLoveEffect());
             button.setFont(new Font("黑体", Font.PLAIN, 18));
             button.setName("spot" + spot.getValue());
             button.addActionListener(ui);
@@ -199,7 +241,8 @@ public class Actions {
     public static void hangAround(GameUI ui, JButton button) {
         Spot spot = Spot.get(Integer.parseInt(button.getName().replaceAll("spot", "")));
         ui.game.addMoney(-spot.getPrice());
-        ui.game.addMood(spot.getEffect());
+        ui.game.addMood(spot.getMoodEffect());
+        ui.game.addLove(spot.getLoveEffect());
         ui.game.subApt(ActionType.HANG_AROUND.getApt());
         ui.updateStatus();
     }
@@ -226,7 +269,7 @@ public class Actions {
 
             button.setBounds(x, y, 150, 40);
             button.setText(travelSpot.getDesc());
-            button.setToolTipText("价格：" + travelSpot.getPrice() + "，效果：" + travelSpot.getEffect());
+            button.setToolTipText("价格：" + travelSpot.getPrice() + "，心情效果：" + travelSpot.getMoodEffect() + "，甜蜜度效果：" + travelSpot.getLoveEffect());
             button.setFont(new Font("黑体", Font.PLAIN, 18));
             button.setName("travelSpot" + travelSpot.getValue());
             button.addActionListener(ui);
@@ -243,7 +286,8 @@ public class Actions {
     public static void travel(GameUI ui, JButton button) {
         TravelSpot travelSpot = TravelSpot.get(Integer.parseInt(button.getName().replaceAll("travelSpot", "")));
         ui.game.addMoney(-travelSpot.getPrice());
-        ui.game.addMood(travelSpot.getEffect());
+        ui.game.addMood(travelSpot.getMoodEffect());
+        ui.game.addLove(travelSpot.getLoveEffect());
         ui.game.subApt(ActionType.TRAVEL.getApt());
         ui.updateStatus();
     }
@@ -256,6 +300,7 @@ public class Actions {
         }
         ui.game.addMoney(-MOVIE_PRICE);
         ui.game.addMood(MOOD_INCR_WHILE_WATCHING_MOVIE);
+        ui.game.addLove(LOVE_INCR_WHILE_WATCHING_MOVIE);
         ui.game.subApt(ActionType.REST.getApt());
         ui.updateStatus();
     }
@@ -265,6 +310,11 @@ public class Actions {
         ui.game.addExperience(EXPERIENCE_INCR_WHILE_WORK);
         ui.game.addMood(-MOOD_DROP_WHILE_WORK);
         ui.game.subApt(ActionType.EXTRA_WORK.getApt());
+        ui.updateStatus();
+    }
+
+    public static void stayHome(GameUI ui) {
+        ui.game.subApt(ActionType.STAY_HOME.getApt());
         ui.updateStatus();
     }
 

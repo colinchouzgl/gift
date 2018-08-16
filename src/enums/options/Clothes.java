@@ -4,14 +4,18 @@ package enums.options;
  * @author Zhou Guanliang
  * @since 2018/8/16
  */
-public enum Goods {
-    LIPSTICK(1, "Lipstick", 80, 5),
-    SKIN_CARE(2, "Skin Care", 100, 6),
-    BAG(3, "Bag", 150, 8),
-    CLOTHES(4, "Clothes", 0, 0),
-    FOODS(5, "Foods", 0, 0);
+public enum Clothes {
+    SKIRT(1, "Skirt", 40, 3),
+    DRESS(2, "Dress", 60, 5),
+    T_SHIRT(3, "T-Shirt", 30, 2),
+    SHIRT(4, "Shirt", 30, 2),
+    SWEATER(5, "Sweater", 50, 4),
+    PAINTS(6, "Paints", 50, 4),
+    COAT(7, "Coat", 70, 6),
+    HAT(8, "Hat", 20, 1),
+    SHOES(9, "Shoes", 60, 5);
 
-    Goods(int value, String desc, int price, int effect) {
+    Clothes(int value, String desc, int price, int effect) {
         this.value = value;
         this.desc = desc;
         this.price = price;
@@ -39,10 +43,10 @@ public enum Goods {
         return effect;
     }
 
-    public static Goods get(int value) {
-        for (Goods goods : Goods.values()) {
-            if (value == goods.getValue()) {
-                return goods;
+    public static Clothes get(int value) {
+        for (Clothes clothes : Clothes.values()) {
+            if (value == clothes.getValue()) {
+                return clothes;
             }
         }
         throw new IllegalArgumentException("参数异常" + value);

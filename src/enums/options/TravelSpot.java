@@ -5,21 +5,23 @@ package enums.options;
  * @since 2018/8/16
  */
 public enum TravelSpot {
-    QHDAO(1, "Qin Huang Dao", 5, 2),
-    BDHE(2, "Bei Dai He", 10, 3),
-    TIANJIN(3, "Tianjin", 99999, 2);
+    QHDAO(1, "Qin Huang Dao", 800, 20, 10),
+    BDHE(2, "Bei Dai He", 500, 15, 8),
+    TIANJIN(3, "Tianjin", 400, 10, 5);
 
-    TravelSpot(int value, String desc, int price, int effect) {
+    TravelSpot(int value, String desc, int price, int moodEffect, int loveEffect) {
         this.value = value;
         this.desc = desc;
         this.price = price;
-        this.effect = effect;
+        this.moodEffect = moodEffect;
+        this.loveEffect = loveEffect;
     }
 
     private final int value;
     private final String desc;
     private final int price;
-    private final int effect;
+    private final int moodEffect;
+    private final int loveEffect;
 
     public int getValue() {
         return value;
@@ -33,8 +35,12 @@ public enum TravelSpot {
         return price;
     }
 
-    public int getEffect() {
-        return effect;
+    public int getMoodEffect() {
+        return moodEffect;
+    }
+
+    public int getLoveEffect() {
+        return loveEffect;
     }
 
     public static TravelSpot get(int value) {
