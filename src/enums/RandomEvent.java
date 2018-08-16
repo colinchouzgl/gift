@@ -10,6 +10,8 @@ public enum RandomEvent {
     //Evening event
     BAD_CAT(1, "小宝和Java搞乱了厨房", 0),
     LATE(2, "老公加班晚回来了一会", 0),
+    RAIN(3, "下了场小雨", 0),
+    CROWDED(4, "今天地铁人挺多", 0),
 
     TOFU(101, "老公下班路上给你带了一份【臭豆腐】，甜蜜度+1", 1),
     CHICKEN(102, "老公下班路上给你带了一份【大鸡排】，甜蜜度+1", 1),
