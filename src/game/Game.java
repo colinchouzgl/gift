@@ -3,7 +3,9 @@ package game;
 import commons.Rules;
 import enums.Time;
 import enums.Tip;
-import io.IOUtils;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Zhou Guanliang
@@ -29,7 +31,7 @@ public class Game {
         love = 100;
         experience = 0;
         salary = Rules.getSalaryByExperience(experience);
-        date = 1;
+        date = 6;
         time = Time.DAY.getValue();
         apt = 1;
     }
@@ -119,10 +121,10 @@ public class Game {
         love = love < 0 ? 0 : love;
     }
 
-    public void addExperience(int offset, IOUtils ioUtils) {
+    public void addExperience(int offset) {
         experience += offset;
         experience = experience < 0 ? 0 : experience;
-        updateSalary(ioUtils);
+        updateSalary();
     }
 
     public void subApt(int offset) {
@@ -130,10 +132,13 @@ public class Game {
         apt = apt < 0 ? 0 : apt;
     }
 
-    private void updateSalary(IOUtils ioUtils) {
+    private void updateSalary() {
         int newSalary = Rules.getSalaryByExperience(experience);
         if (newSalary > salary) {
-            ioUtils.tip(Tip.RAISE_SALARY, newSalary);
+
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, String.format(Tip.RAISE_SALARY.getDesc(), newSalary), "加薪啦", JOptionPane.INFORMATION_MESSAGE);
+
             salary = newSalary;
         }
     }

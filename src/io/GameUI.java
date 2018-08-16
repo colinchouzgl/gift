@@ -43,12 +43,15 @@ public class GameUI extends JFrame implements ActionListener {
     public JButton chat;
     public JButton watchTV;
     public JButton shopping;
-    public JButton travel;
+    public JButton hangAround;
     public JButton watchMovie;
     public JButton extraWork;
+    public JButton stayHome;
 
     public ButtonGroup snackGroup = new ButtonGroup();
-
+    public ButtonGroup goodsGroup = new ButtonGroup();
+    public ButtonGroup spotGroup = new ButtonGroup();
+    public ButtonGroup travelSpotGroup = new ButtonGroup();
 
     public GameUI() {
         super();
@@ -227,17 +230,17 @@ public class GameUI extends JFrame implements ActionListener {
         shopping.addActionListener(this);
         mainPane.add(shopping);
 
-        travel = new JButton();
-        travel.setBounds(580, 160, 120, 40);
-        travel.setText("旅游");
-        travel.setToolTipText("出去玩，现金-，心情+，甜蜜度+");
-        travel.setFont(new Font("黑体", Font.PLAIN, 18));
-        travel.addActionListener(this);
-        mainPane.add(travel);
+        hangAround = new JButton();
+        hangAround.setBounds(580, 160, 120, 40);
+        hangAround.setText("出去玩");
+        hangAround.setToolTipText("出去玩，现金-，心情+，甜蜜度+");
+        hangAround.setFont(new Font("黑体", Font.PLAIN, 18));
+        hangAround.addActionListener(this);
+        mainPane.add(hangAround);
 
         watchMovie = new JButton();
         watchMovie.setBounds(580, 200, 120, 40);
-        watchMovie.setText("看电影");
+        watchMovie.setText("去看电影");
         watchMovie.setToolTipText("看电影，现金-，心情+，甜蜜度+");
         watchMovie.setFont(new Font("黑体", Font.PLAIN, 18));
         watchMovie.addActionListener(this);
@@ -264,13 +267,53 @@ public class GameUI extends JFrame implements ActionListener {
             Actions.showSnack(this);
         } else if (e.getSource() == chat) {
             Actions.chat(this);
+        } else if (e.getSource() == watchTV) {
+            Actions.watchTV(this);
+        } else if (e.getSource() == shopping) {
+            Actions.showGoods(this);
+        } else if (e.getSource() == hangAround) {
+            Actions.showSpot(this);
+        } else if (e.getSource() == watchMovie) {
+            Actions.watchMovie(this);
+        } else if (e.getSource() == extraWork) {
+            Actions.extraWork(this);
         } else if (e.getSource() instanceof JButton) {
             JButton source = (JButton) e.getSource();
+
             Enumeration<AbstractButton> snackButtons = snackGroup.getElements();
             while (snackButtons.hasMoreElements()) {
                 AbstractButton button = snackButtons.nextElement();
                 if (button.equals(source)) {
                     Actions.eatSnack(this, source);
+                }
+            }
+
+            Enumeration<AbstractButton> goodsButtons = goodsGroup.getElements();
+            while (goodsButtons.hasMoreElements()) {
+                AbstractButton button = goodsButtons.nextElement();
+                if (button.equals(source)) {
+                    Actions.shopping(this, source);
+                }
+            }
+
+            Enumeration<AbstractButton> spotButtons = spotGroup.getElements();
+            while (spotButtons.hasMoreElements()) {
+                AbstractButton button = spotButtons.nextElement();
+                if (button.equals(source)) {
+                    if ("spot6".equals(button.getName())) {
+                        updateStatus();
+                        Actions.showTravelSpot(this);
+                    } else {
+                        Actions.hangAround(this, source);
+                    }
+                }
+            }
+
+            Enumeration<AbstractButton> travelSpotButtons = travelSpotGroup.getElements();
+            while (travelSpotButtons.hasMoreElements()) {
+                AbstractButton button = travelSpotButtons.nextElement();
+                if (button.equals(source)) {
+                    Actions.travel(this, source);
                 }
             }
         }
@@ -291,12 +334,11 @@ public class GameUI extends JFrame implements ActionListener {
         salaryValue.setText(String.valueOf(game.getSalary()));
         aptValue.setText(String.valueOf(game.getApt()));
 
-        Enumeration<AbstractButton> snackButtons = snackGroup.getElements();
-        while (snackButtons.hasMoreElements()) {
-            AbstractButton button = snackButtons.nextElement();
-            itemPane.remove(button);
-        }
-        snackGroup = new ButtonGroup();
+        removeGroup(snackGroup);
+        removeGroup(goodsGroup);
+        removeGroup(spotGroup);
+        removeGroup(travelSpotGroup);
+
         itemTitle.setVisible(false);
         itemPane.repaint();
 
@@ -308,7 +350,7 @@ public class GameUI extends JFrame implements ActionListener {
             chat.setEnabled(false);
             watchTV.setEnabled(false);
             shopping.setEnabled(true);
-            travel.setEnabled(true);
+            hangAround.setEnabled(true);
             watchMovie.setEnabled(true);
             extraWork.setEnabled(true);
         } else {
@@ -320,7 +362,7 @@ public class GameUI extends JFrame implements ActionListener {
                 chat.setEnabled(true);
                 watchTV.setEnabled(true);
                 shopping.setEnabled(false);
-                travel.setEnabled(false);
+                hangAround.setEnabled(false);
                 watchMovie.setEnabled(false);
                 extraWork.setEnabled(false);
             } else {
@@ -331,10 +373,19 @@ public class GameUI extends JFrame implements ActionListener {
                 chat.setEnabled(false);
                 watchTV.setEnabled(false);
                 shopping.setEnabled(false);
-                travel.setEnabled(false);
+                hangAround.setEnabled(false);
                 watchMovie.setEnabled(false);
                 extraWork.setEnabled(false);
             }
         }
+    }
+
+    private void removeGroup(ButtonGroup group) {
+        Enumeration<AbstractButton> buttons = group.getElements();
+        while (buttons.hasMoreElements()) {
+            AbstractButton button = buttons.nextElement();
+            itemPane.remove(button);
+        }
+//        group = new ButtonGroup();
     }
 }

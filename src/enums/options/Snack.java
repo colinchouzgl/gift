@@ -1,4 +1,4 @@
-package enums;
+package enums.options;
 
 /**
  * @author Zhou Guanliang

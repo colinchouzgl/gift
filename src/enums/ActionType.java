@@ -11,7 +11,14 @@ public enum ActionType {
 
     EAT_SNACK(51, "Eat Snack", 1),
     CHAT(52, "Chat", 1),
-    WATCH_TV(53, "Watch TV", 1);
+    WATCH_TV(53, "Watch TV", 1),
+
+    SHOPPING(101, "Go Shopping", 1),
+    HANG_AROUND(102, "Hang Around", 1),
+    TRAVEL(103, "TRAVEL", 1),
+    WATCH_MOVIE(104, "Watch Movie", 1),
+    EXTRA_WORK(105, "Extra Work", 1),
+    STAY_HOME(106, "Stay Home", 1);
 
     ActionType(int value, String desc, int apt) {
         this.value = value;

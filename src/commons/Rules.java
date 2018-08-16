@@ -2,6 +2,7 @@ package commons;
 
 import enums.ChatResult;
 import enums.RandomEvent;
+import enums.TVResult;
 
 /**
  * @author Zhou Guanliang
@@ -52,6 +53,22 @@ public class Rules {
             return ChatResult.get(Utils.random(ChatResult.COLD.getValue(), ChatResult.COMPLAIN.getValue()));
         }
         return ChatResult.get(Utils.random(ChatResult.ARGUE.getValue(), ChatResult.FIGHT.getValue()));
+    }
+
+    public static TVResult computeTVResult(int mood) {
+        if (mood > 180) {
+            return TVResult.get(Utils.random(TVResult.MEMORY.getValue(), TVResult.FRIEND.getValue()));
+        }
+        if (mood > 120) {
+            return TVResult.get(Utils.random(TVResult.HAPPY.getValue(), TVResult.CURSE.getValue()));
+        }
+        if (mood > 80) {
+            return TVResult.get(Utils.random(TVResult.PEACE.getValue(), TVResult.PEACE.getValue()));
+        }
+        if (mood > 50) {
+            return TVResult.get(Utils.random(TVResult.COLD.getValue(), TVResult.COMPLAIN.getValue()));
+        }
+        return TVResult.get(Utils.random(TVResult.ARGUE.getValue(), TVResult.FIGHT.getValue()));
     }
 
     public static RandomEvent computeEveningEvent(int love) {
