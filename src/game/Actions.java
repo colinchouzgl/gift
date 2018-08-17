@@ -8,6 +8,7 @@ import enums.RandomEvent;
 import enums.TVResult;
 import enums.options.*;
 import io.GameUI;
+import io.SaveHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +32,7 @@ public class Actions {
         ui.game.addExperience(EXPERIENCE_INCR_WHILE_WORK);
         ui.game.addMood(-MOOD_DROP_WHILE_WORK);
         ui.game.subApt(ActionType.WORK.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -39,12 +41,14 @@ public class Actions {
         ui.game.addExperience((int) (EXPERIENCE_INCR_WHILE_WORK * 1.5));
         ui.game.addMood(-(int) (MOOD_DROP_WHILE_WORK * 1.5));
         ui.game.subApt(ActionType.WORK_OVERTIME.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
     public static void rest(GameUI ui) {
         ui.game.addMood(MOOD_INCR_WHILE_REST);
         ui.game.subApt(ActionType.REST.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -98,6 +102,7 @@ public class Actions {
         ui.game.addMoney(-snack.getPrice());
         ui.game.addMood(snack.getEffect());
         ui.game.subApt(ActionType.EAT_SNACK.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -152,6 +157,7 @@ public class Actions {
 
         ui.game.addMood(food.getType().getEffect());
         ui.game.subApt(ActionType.EAT_SNACK.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -163,6 +169,7 @@ public class Actions {
 
         ui.game.addLove(result.getEffect());
         ui.game.subApt(ActionType.CHAT.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -174,6 +181,7 @@ public class Actions {
 
         ui.game.addLove(result.getEffect());
         ui.game.subApt(ActionType.WATCH_TV.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -220,6 +228,7 @@ public class Actions {
         ui.game.addMoney(-goods.getPrice());
         ui.game.addMood(goods.getEffect());
         ui.game.subApt(ActionType.SHOPPING.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -266,6 +275,7 @@ public class Actions {
         ui.game.addMoney(-clothes.getPrice());
         ui.game.addMood(clothes.getEffect());
         ui.game.subApt(ActionType.SHOPPING.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -341,6 +351,7 @@ public class Actions {
             foodList.add(new Food(ui.selectedFoodType, count - 1));
         }
         ui.game.subApt(ActionType.SHOPPING.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -388,6 +399,7 @@ public class Actions {
         ui.game.addMood(spot.getMoodEffect());
         ui.game.addLove(spot.getLoveEffect());
         ui.game.subApt(ActionType.HANG_AROUND.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -435,6 +447,7 @@ public class Actions {
         ui.game.addMood(travelSpot.getMoodEffect());
         ui.game.addLove(travelSpot.getLoveEffect());
         ui.game.subApt(ActionType.TRAVEL.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -448,6 +461,7 @@ public class Actions {
         ui.game.addMood(MOOD_INCR_WHILE_WATCHING_MOVIE);
         ui.game.addLove(LOVE_INCR_WHILE_WATCHING_MOVIE);
         ui.game.subApt(ActionType.REST.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
@@ -456,11 +470,13 @@ public class Actions {
         ui.game.addExperience(EXPERIENCE_INCR_WHILE_WORK);
         ui.game.addMood(-MOOD_DROP_WHILE_WORK);
         ui.game.subApt(ActionType.EXTRA_WORK.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 
     public static void stayHome(GameUI ui) {
         ui.game.subApt(ActionType.STAY_HOME.getApt());
+        SaveHandler.save(ui.game, ui.savPath);
         ui.updateStatus();
     }
 

@@ -113,35 +113,71 @@ public class Game {
         return money;
     }
 
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
     public int getMood() {
         return mood;
+    }
+
+    public void setMood(int mood) {
+        this.mood = mood;
     }
 
     public int getLove() {
         return love;
     }
 
+    public void setLove(int love) {
+        this.love = love;
+    }
+
     public int getExperience() {
         return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 
     public int getSalary() {
         return salary;
     }
 
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
     public int getDate() {
         return date;
+    }
+
+    public void setDate(int date) {
+        this.date = date;
     }
 
     public int getTime() {
         return time;
     }
 
+    public void setTime(int time) {
+        this.time = time;
+    }
+
     public int getApt() {
         return apt;
     }
 
+    public void setApt(int apt) {
+        this.apt = apt;
+    }
+
     public List<Food> getFoodList() {
         return foodList;
+    }
+
+    public void setFoodList(List<Food> foodList) {
+        this.foodList = foodList;
     }
 }

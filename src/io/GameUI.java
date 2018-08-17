@@ -6,9 +6,11 @@ import game.Actions;
 import game.Game;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Enumeration;
 
 /**
@@ -61,10 +63,11 @@ public class GameUI extends JFrame implements ActionListener {
     public ButtonGroup travelSpotGroup = new ButtonGroup();
 
     public JDialog foodForm;
-
     public JTextField foodCount;
+    public JFileChooser fileChooser;
 
     public FoodType selectedFoodType = FoodType.get(1);
+    public String savPath = "";
 
     public GameUI() {
         super();
@@ -97,6 +100,24 @@ public class GameUI extends JFrame implements ActionListener {
         addDialog();
 
         updateStatus();
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "SAV文件(*.sav)", "sav");
+        fileChooser.setFileFilter(filter);
+        int option = fileChooser.showOpenDialog(null);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            SaveHandler.load(file.getAbsolutePath(), this);
+
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, "加载存档成功", "成功", JOptionPane.INFORMATION_MESSAGE);
+
+            if(game.getApt()==0){
+                game.timePass();
+                Actions.randomEvent(this);
+                updateStatus();
+            }
+        }
     }
 
     private void addLabel() {
@@ -306,6 +327,8 @@ public class GameUI extends JFrame implements ActionListener {
         foodForm.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         foodForm.setResizable(false);
         foodForm.setLocationRelativeTo(null);
+
+        fileChooser = new JFileChooser();
     }
 
     @Override
